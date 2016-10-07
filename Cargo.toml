@@ -1,0 +1,11 @@
+[package]
+name = "glusterfs-exporter"
+version = "0.1.0"
+authors = ["Tobias Florek <tob@butter.sh>"]
+
+[dependencies]
+prometheus = "0.2"
+xml-rs = "0.3"
+env_logger = "0.3"
+hyper = "0.9"
+log = "0.3"
