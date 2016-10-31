@@ -1,13 +1,11 @@
-extern crate xml;
+extern crate serde;
+extern crate serde_xml;
 
 use glusterfs_exporter::errors::*;
-
-use std::str;
+use glusterfs_exporter::types::*;
 use std::process::{Command, Output};
-
-use self::xml::attribute::{OwnedAttribute};
-use self::xml::name::{OwnedName};
-use self::xml::reader::{EventReader, XmlEvent};
+use std::io::Read;
+use std::str;
 
 fn fail_if_not_successful(cmd_string: &str, cmd: &Output) -> Result<(), GEError> {
     if !cmd.status.success() {
@@ -32,7 +30,7 @@ pub fn gluster_volumes() -> Result<Vec<String>, GEError> {
 // This assumes valid xml output as of Glusterfs 3.8
 // In detail, it will fail if e.g. a <fop> element appears not inside a <brick>'s
 // <cumulativeStats>.
-pub fn gluster_vol_info(vol: String) -> Result<(), GEError> {
+pub fn gluster_vol_info(vol: String) -> Result<VolumeProfileInfo, GEError> {
     let cmd = try!(Command::new("gluster")
         .arg("volume")
         .arg("profile")
@@ -42,33 +40,5 @@ pub fn gluster_vol_info(vol: String) -> Result<(), GEError> {
         .arg("--xml")
         .spawn());
     let stdout = try!(cmd.stdout.ok_or("Can't capture stdout"));
-    let parser = EventReader::new(stdout);
-    // let cur_stat = MaybeStat(None, None, None);
-    for e in parser {
-        match e {
-            Ok(XmlEvent::StartElement{name : OwnedName{ local_name, ..}, attributes, ..}) => {
-                info!("parsing elem {}.", local_name);
-                match local_name.as_ref() {
-                    "brickName" => {
-                        // cur_stat = Some(value);
-                        debug!("setting brickName to {}", local_name);
-                    },
-                    _ => info!("somewhere else")
-                }
-            },
-            Ok(XmlEvent::EndElement{name : OwnedName{ local_name, ..}}) => {
-                info!("ending elem {}.", local_name);
-                match local_name.as_ref() {
-                    "brick" => debug!("closing brick."),
-                    _ => info!("somewhere else!")
-                }
-            },
-            Ok(_) => break,
-            Err(e) => {
-                // err!("Can't parse xml output: {}.", e);
-                break;
-            }
-        }
-    }
-    Ok(())
+    serde_xml::de::from_iter(stdout.bytes()).map_err(From::from)
 }

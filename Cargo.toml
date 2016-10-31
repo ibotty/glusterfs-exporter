@@ -2,10 +2,15 @@
 name = "glusterfs-exporter"
 version = "0.1.0"
 authors = ["Tobias Florek <tob@butter.sh>"]
+build = "build.rs"
 
 [dependencies]
 prometheus = "0.2"
-xml-rs = "0.3"
+serde = "0.8"
+serde_xml = "0.9"
 env_logger = "0.3"
 hyper = "0.9"
 log = "0.3"
+
+[build-dependencies]
+serde_codegen = "0.8"

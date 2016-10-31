@@ -1,0 +1,6 @@
+max_width = 120
+ideal_width = 78
+report_todo = "Always"
+reorder_imports = true
+reorder_imported_names = true
+wrap_match_arms = true

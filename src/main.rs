@@ -4,31 +4,40 @@ extern crate hyper;
 extern crate env_logger;
 extern crate prometheus;
 
+extern crate serde_xml;
+
 #[macro_use]
 pub mod glusterfs_exporter {
     #[macro_use]
     pub mod errors;
     pub mod commands;
     pub mod http;
+    pub mod types;
 }
 
-use glusterfs_exporter::errors::*;
 use glusterfs_exporter::http::*;
+use glusterfs_exporter::types::*;
+use glusterfs_exporter::errors::*;
+use hyper::server::Server;
 
 use std::env;
 use std::str;
-use std::process::Command;
-use hyper::server::Server;
+use std::io::Read;
 
 fn main() {
     env_logger::init().unwrap();
     let arg0 = get_process_name();
     info!("starting {}", arg0);
 
+    let test_file = std::fs::File::open("sample.xml").unwrap();
+    let deserialized: Result<VolumeProfileInfo, serde_xml::Error> = serde_xml::de::from_iter(test_file.bytes());
+    println!("{:?}", deserialized);
+    panic!();
+
+
 
     let default_listen_address = String::from("0.0.0.0:9189");
-    let listen_address = env::var("GLUSTER_EXPORTER_LISTEN_ADDRESS")
-        .unwrap_or(default_listen_address);
+    let listen_address = env::var("GLUSTER_EXPORTER_LISTEN_ADDRESS").unwrap_or(default_listen_address);
 
     info!("listening on {}", listen_address);
 

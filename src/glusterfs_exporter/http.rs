@@ -4,10 +4,10 @@ extern crate prometheus;
 use glusterfs_exporter::commands::*;
 
 use hyper::header;
-use hyper::uri::RequestUri;
+use hyper::mime::Mime;
 use hyper::server::{Request, Response};
 use hyper::status::StatusCode;
-use hyper::mime::Mime;
+use hyper::uri::RequestUri;
 use prometheus::{Encoder, TextEncoder};
 
 fn strip_slash(s: &str) -> &str {
@@ -49,6 +49,7 @@ pub fn write_metrics(mut res: Response) {
     let encoder = TextEncoder::new();
 
     encoder.encode(&metric_familys, &mut buffer).unwrap();
-    res.headers_mut().set(header::ContentType(encoder.format_type().parse::<Mime>().unwrap()));
+    res.headers_mut()
+        .set(header::ContentType(encoder.format_type().parse::<Mime>().unwrap()));
     res.send(&buffer).unwrap();
 }
