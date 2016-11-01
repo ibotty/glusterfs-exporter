@@ -2,6 +2,7 @@ extern crate hyper;
 extern crate prometheus;
 
 use glusterfs_exporter::commands::*;
+use glusterfs_exporter::metrics::*;
 
 use hyper::header;
 use hyper::mime::Mime;
@@ -32,18 +33,21 @@ pub fn serve_metrics(req: Request, mut res: Response) {
     }
 }
 
-pub fn write_notfound(mut res: Response) {
+fn write_notfound(mut res: Response) {
     *res.status_mut() = StatusCode::NotFound;
 }
 
-pub fn write_redirect(mut res: Response, uri: &str) {
+fn write_redirect(mut res: Response, uri: &str) {
     *res.status_mut() = StatusCode::MovedPermanently;
     res.headers_mut().set(header::Location(uri.to_string()));
 }
 
-pub fn write_healthz(mut res: Response) {}
+pub fn write_healthz(_res: Response) {
+}
 
 pub fn write_metrics(mut res: Response) {
+    collect_stats().map_err(|e| { EXPORTER_FAILURE_COUNTER.inc(); e}).unwrap();
+
     let metric_familys = prometheus::gather();
     let mut buffer = vec![];
     let encoder = TextEncoder::new();

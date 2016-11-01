@@ -11,6 +11,7 @@ serde_xml = "0.9"
 env_logger = "0.3"
 hyper = "0.9"
 log = "0.3"
+lazy_static = "0.2"
 
 [build-dependencies]
 serde_codegen = "0.8"
