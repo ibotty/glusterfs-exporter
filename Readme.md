@@ -15,4 +15,8 @@ command to enable profiling on all volumes.
 
 ## Building `glusterfs_exporter`
 
+Can be done with cargo and a recent-ish rust.
 
+```
+cargo install
+```
