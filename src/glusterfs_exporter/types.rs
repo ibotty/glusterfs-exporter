@@ -3,7 +3,6 @@ extern crate serde_xml;
 
 include!(concat!(env!("OUT_DIR"), "/glusterfs_exporter/types.rs"));
 
-#[test]
 mod tests {
     use super::*;
     use serde_xml::de::from_iter;
