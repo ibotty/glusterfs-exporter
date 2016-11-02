@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ibotty/glusterfs-exporter.svg?branch=master)](https://travis-ci.org/ibotty/glusterfs-exporter)
+k
 # Prometheus glusterfs exporter
 
 This exporter is meant to be started next to a gluster peer (not neccessarily
