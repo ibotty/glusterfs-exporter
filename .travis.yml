@@ -1,4 +1,7 @@
 language: rust
+sudo: required
+os:
+- linux
 rust:
 - stable
 - beta
@@ -6,3 +9,16 @@ rust:
 matrix:
   allow_failures:
   - rust: nightlyRun
+
+before_deploy: "./build-release glusterfs-exporter ${TRAVIS_TAG}-${TRAVIS_OS_NAME}"
+deploy:
+  provider: releases
+  api_key:
+    secure: MWbhUBDhvGFcRb7qMKQRz1tCu4AgLGuYXNyjB0MDjPkBmKOH2PFqnfudwBh0td67jhnD4BjT07rvB0Rm1NxTjkHsBkaWjGQkTEc1KAjxKV9Ma0tyQpMO1ir80AYXiMFDiUku157w3ytK2wf+mOSl90AQRdm0nlcsqGIgNli8pNv5FJyntWsNnAhHMIsev8IpM6fmU4FzbN3rZcAazDRgchG284XtOLofvKZZnq0SPTgDJZFgUYExF5mE0Jm6vaYTqC8DtpGCg+U+2AKWx49a18CmILWpvZ2m4kdcjoYqNzPSPvWwgLUKBpofvSU3/ixL9mogapsP97hwZEP/iErq4xsUDhqXNUSpgQKb8Zc3mVwD8HoWxCSqTaVQHhULqEUGK2Co33h+0gPnBZed1YNI9f4XTWZ4uUUpD6NIQjfT9wSjSQB9ehgSUkntiWtSJVIcgZXJgMYGJ8l8kZSCkRLt7wWMmDDu8/9KzwKC8rez/yoX7KuK1MWcOHr+A8CNvgESu9f8CRGj0MNGRF/nyxaeLLbmlV/Edu4JbMS/7Jmkfj/U13kgHc6PCBFVh9IhfF9f3RCgLdnoAA8xeWXLcfJQtnecKbxJgMTSk5NO1Ch9z38roycqQBRUEXwJXfJ3KUAXcIdb+B4Gy4jDeu+9sp25wYc4IiVcxKTSegV3lotLLSE=
+  file: glusterfs-exporter-${TRAVIS_TAG}-${TRAVIS_OS_NAME}.*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    repo: ibotty/glusterfs-exporter
+    rust: stable
+    tags: true
