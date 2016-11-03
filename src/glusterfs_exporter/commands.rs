@@ -37,9 +37,8 @@ pub fn gluster_vol_info(vol: &str) -> Result<VolProfile, GEError> {
         .arg("info")
         .arg("cumulative")
         .arg("--xml")
-        .spawn());
-    let stdout = try!(cmd.stdout.ok_or("Can't capture stdout"));
-    serde_xml::de::from_iter(stdout.bytes())
+        .output());
+    serde_xml::de::from_iter(cmd.stdout.bytes())
         .map_err(From::from)
         .map(|cli: CliOutput| cli.vol_profile)
 }
