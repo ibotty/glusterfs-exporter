@@ -1,6 +1,11 @@
 [package]
 name = "glusterfs-exporter"
-version = "0.1.0"
+description = "A prometheus exporter for glusterfs' volumes profile information"
+homepage = "https://github.com/ibotty/glusterfs-exporter"
+repository = "https://github.com/ibotty/glusterfs-exporter.git"
+readme = "Readme.md"
+license = "MIT"
+version = "0.1.1"
 authors = ["Tobias Florek <tob@butter.sh>"]
 build = "build.rs"
 

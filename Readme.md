@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/ibotty/glusterfs-exporter.svg?branch=master)](https://travis-ci.org/ibotty/glusterfs-exporter)
-k
+[![crates.io](https://img.shields.io/crates/v/glusterfs-exporer.svg)](https://crates.io/crates/glusterfs-exporter)
+
 # Prometheus glusterfs exporter
 
 This exporter is meant to be started next to a gluster peer (not neccessarily
