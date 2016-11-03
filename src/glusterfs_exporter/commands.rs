@@ -45,7 +45,7 @@ pub fn gluster_vol_info(vol: &str) -> Result<VolProfile, GEError> {
 
 pub fn collect_stats() -> Result<(), GEError> {
     for vol in try!(gluster_volumes()).iter() {
-        info!("collection profile info for volume {}.", vol);
+        info!("collecting profile info for volume {}.", vol);
         let VolProfile{profile_op, bricks, ..} = try!(gluster_vol_info(vol));
         PROFILE_OP_GAUGE.with_label_values(&[vol]).set(profile_op as f64);
 
