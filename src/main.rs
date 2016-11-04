@@ -10,14 +10,7 @@ extern crate serde_xml;
 extern crate lazy_static;
 
 #[macro_use]
-pub mod glusterfs_exporter {
-    #[macro_use]
-    pub mod errors;
-    pub mod commands;
-    pub mod http;
-    pub mod metrics;
-    pub mod types;
-}
+pub mod glusterfs_exporter;
 
 use glusterfs_exporter::http::*;
 use hyper::server::Server;
